@@ -33,6 +33,9 @@ ol li,ul li{margin-bottom:8px}.note{font-size:.88rem;color:var(--mute)}
 input{font:inherit;padding:10px 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);width:100%;margin:8px 0}
 .lockbox{background:var(--lock);border-radius:12px;padding:14px;margin-top:12px}
 #msg{font-weight:600;margin:6px 0 0}
+.pay-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: #f4f4f4; color: #333; border: 1px solid #ddd; padding: 12px; border-radius: 8px; margin-bottom: 10px; width: 100%; font-weight: bold; text-decoration: none; }
+.pay-btn:hover { background: #e0e0e0; }
+.pay-btn img { height: 24px; }
 </style>
 </head>
 <body>
@@ -59,15 +62,30 @@ input{font:inherit;padding:10px 12px;border-radius:10px;border:1.5px solid var(-
 <h2>Débloquer toutes les recettes</h2>
 <p>Accès complet à partir de <b id="px"></b> FCFA.</p>
 <ol>
-<li>Demande ton code à Amira avec le bouton ci-dessous.</li>
-<li>Amira t’explique le paiement et te donne ton code personnel.</li>
-<li>Tape ton code ici.</li>
+<li>Choisis ton moyen de paiement ci-dessous.</li>
+<li>Effectue le paiement de 2000 FCFA.</li>
+<li>Envoie la capture d'écran sur WhatsApp.</li>
+<li>Tu recevras ton code personnel par message.</li>
 </ol>
-<div class="row"><a class="chip cta" id="wa" target="_blank" rel="noopener" href="#">Demander mon code</a></div>
+
+<!-- BOUTONS DE PAIEMENT -->
+<a class="pay-btn" href="https://wa.me/22391999235?text=Bonjour, je souhaite payer par Orange Money pour débloquer les recettes." target="_blank">
+    <span style="color:orange; font-size:20px;">📱</span> Payer par Orange Money
+</a>
+<a class="pay-btn" href="https://wa.me/22391999235?text=Bonjour, je souhaite payer par Wave pour débloquer les recettes." target="_blank">
+    <span style="color:blue; font-size:20px;">🌊</span> Payer par Wave
+</a>
+<a class="pay-btn" href="https://wa.me/22391999235?text=Bonjour, je souhaite payer par Carte Bancaire pour débloquer les recettes." target="_blank">
+    <span style="color:black; font-size:20px;">💳</span> Payer par Mastercard / Visa
+</a>
+
+<div style="margin-top:20px; border-top:1px solid var(--line); padding-top:20px;">
+<p class="note">Déjà un code ? Entre-le ici :</p>
 <input id="code" placeholder="Ton code de déblocage" autocomplete="off" aria-label="Code de déblocage">
 <button class="chip cta" id="ok">Valider le code</button>
 <p id="msg"></p>
 <p class="note">Un code fonctionne sur un seul appareil.</p>
+</div>
 </div>
 </section>
 
@@ -84,11 +102,8 @@ input{font:inherit;padding:10px 12px;border-radius:10px;border:1.5px solid var(-
 <script>
 const $=s=>document.querySelector(s);
 const CFG={prix:2000};
-
-// L'adresse de base de ton dossier GitHub
 const BASE_IMG = "https://raw.githubusercontent.com/fatimajamilanour-cpu/MonApplicationFinale/main/";
 
-// Les noms EXACTS de tes images sur GitHub
 const R=[
 {"c":"Monde","img":BASE_IMG+"pizza maison moelleuse (4 pizzas).jpg","f":1,"n":"pizza maison moelleuse","i":"1 kg farine;40 g levure;20 g sel;1 verre d'huile;1 verre de lait;1½ verre d'eau;1 œuf;Sauce tomate","s":"Mélange farine, sel, levure, huile, lait, œuf et eau.|Laisse lever 1 h.|Prépare la sauce tomate.|Étale la pâte et garnis.|Cuis 6 minutes à 200 °C."},
 {"c":"Afrique","img":BASE_IMG+"Thiéboudiène (thiébou djeune).jpg","f":1,"n":"Thiéboudiène","i":"Poisson;Riz;Légumes;Tomate;Épices","s":"Prépare le poisson.|Cuis les légumes.|Cuis le riz dans le bouillon.|Dresse le tout."},
@@ -99,9 +114,9 @@ const R=[
 {"c":"Pains","img":BASE_IMG+"Pain au lait brioché.jpg","n":"Pain au lait brioché"},
 {"c":"Pains","img":BASE_IMG+"Pain au lait au chocolat.jpg","n":"Pain au lait au chocolat"},
 {"c":"Pains","img":BASE_IMG+"Pain de mie.jpg","f":1,"n":"Pain de mie","i":"Farine;Levure;Sucre;Sel;Lait;Eau;Beurre","s":"Mélange les ingrédients.|Pétris 10 min.|Laisse lever 2h.|Cuis 30 min à 180 °C."},
-{"c":"Pâtisserie","img":BASE_IMG+"Brioche marbrée coeur Nutella.jpg","n":"Brioche marbrée Nutella"},
+{"c":"Pâtisserie","img":BASE_IMG+"Brioche marbrée cœur Nutella.jpg","n":"Brioche marbrée Nutella"},
 {"c":"Monde","img":BASE_IMG+"Brioches vapeur à la viande.jpg","n":"Brioches vapeur à la viande"},
-{"c":"Afrique","img":BASE_IMG+"poulet yassa.jpg","n":"Poulet yassa"},
+{"c":"Afrique","img":BASE_IMG+"poulet yassa.jpg","n":"poulet yassa"},
 {"c":"Afrique","img":BASE_IMG+"Sauce gombo.jpg","n":"Sauce gombo"},
 {"c":"Afrique","img":BASE_IMG+"Mafé.jpg","n":"Mafé"},
 {"c":"Afrique","img":BASE_IMG+"Tô.jpg","f":1,"n":"Tô","i":"Farine de mil;Eau;Sauce","s":"Bouillir l'eau.|Ajouter la farine.|Mélanger jusqu'à épaississement."},
@@ -115,11 +130,12 @@ const R=[
 {"c":"Afrique","img":BASE_IMG+"Pastels.jpg","n":"Pastels"},
 {"c":"Pâtisserie","img":BASE_IMG+"Gâteau moka.jpg","n":"Gâteau moka"},
 {"c":"Monde","img":BASE_IMG+"Sandwich à la viande hachée.jpg","n":"Sandwich viande hachée"},
+{"c":"Monde","img":BASE_IMG+"Couscous arabe.jpg","n":"Couscous arabe"},
 {"c":"Monde","img":BASE_IMG+"Vermicelles sautés au poulet.jpg","n":"Vermicelles au poulet"},
 {"c":"Afrique","img":BASE_IMG+"Bouillie de mil (moni).jpg","n":"Bouillie de mil"},
 {"c":"Afrique","img":BASE_IMG+"Soupe de tête de mouton.jpg","n":"Soupe de tête de mouton"},
-{"c":"Boissons","img":BASE_IMG+"Smoothie Banane.jpg","n":"Smoothie banane"},
-{"c":"Boissons","img":BASE_IMG+"Smoothie Fraise.jpg","n":"Smoothie fraise"},
+{"c":"Boissons","img":BASE_IMG+"Smoothie Banane.jpg","n":"Smoothie Banane"},
+{"c":"Boissons","img":BASE_IMG+"Smoothie Fraise.jpg","n":"Smoothie Fraise"},
 {"c":"Boissons","img":BASE_IMG+"Smoothie Nutella.jpg","n":"Smoothie Nutella"},
 {"c":"Boissons","img":BASE_IMG+"Smoothie Oreo.jpg","n":"Smoothie Oreo"},
 {"c":"Boissons","img":BASE_IMG+"Smoothie Kinder Bueno.jpg","n":"Smoothie Kinder Bueno"}
@@ -138,7 +154,6 @@ function list(){
  $("#cats").querySelectorAll("button").forEach(b=>b.onclick=()=>{cat=b.dataset.c;list()});
  $("#grid").innerHTML=R.map((r,k)=>[r,k]).filter(([r])=>cat==="Tout"||r.c===cat).map(([r,k])=>{
    const o=!!full(r,k);
-   // On utilise encodeURI pour que les espaces et accents dans les noms de fichiers marchent
    return `<button class="rc ${o?"":"lk"}" data-k="${k}"><div class="img" style="background-image:url('${encodeURI(r.img)}')"></div><div class="t"><b>${r.n}</b><span class="badge">${r.f?"Gratuit":o?"Débloquée":"🔒 Premium"}</span></div></button>`
  }).join("");
  $("#grid").querySelectorAll("button").forEach(b=>b.onclick=()=>show(+b.dataset.k));
