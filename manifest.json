@@ -1,0 +1,16 @@
+{
+  "name": "Recettes Secrètes",
+  "short_name": "Recettes",
+  "description": "Application pour débloquer des recettes de cuisine secrètes.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4f4f9",
+  "theme_color": "#6C4CE8",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3075/3075977.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
