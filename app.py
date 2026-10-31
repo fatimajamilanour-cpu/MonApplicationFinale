@@ -27,6 +27,7 @@ def accueil():
     <head>
         <meta charset="UTF-8">
         <title>Recettes Secrètes</title>
+        <link rel="manifest" href="/manifest.json">
         <style>
             body { text-align:center; font-family:sans-serif; padding:50px; background:#f4f4f9; }
             .box { background:white; padding:30px; border-radius:10px; max-width:400px; margin:auto; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
