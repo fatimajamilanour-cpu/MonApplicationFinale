@@ -3,10 +3,10 @@ import json
 import hashlib
 import secrets
 import time
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-app = Flask(__name__, static_folder='static')
+app = Flask(__name__)
 CORS(app)
 SECRET_KEY = os.environ.get("SECRET_KEY", "phrase_secrete_par_defaut")
 AMIRA_PHONE = os.environ.get("AMIRA_PHONE", "+22391999235")
@@ -19,10 +19,8 @@ TENTATIVES = {}
 def hacher_code(code):
     return hashlib.sha256(f"{code}{SECRET_KEY}".encode()).hexdigest()
 
-# C'EST ICI QUE LA PAGE HTML EST CHARGÉE
 @app.route('/')
 def accueil():
-    # On met le code HTML directement ici
     html = """
     <!DOCTYPE html>
     <html lang="fr">
@@ -90,8 +88,8 @@ def accueil():
     </html>
     """
     CODES_DB[hacher_code("AJ-2503-72BD")] = {"appareil": None}
-    return html
     CODES_DB[hacher_code("AJ-9999-VIP1")] = {"appareil": None}
+    return html
 
 @app.route('/api/recettes-premium', methods=['POST'])
 def get_recettes():
@@ -120,20 +118,13 @@ def get_recettes():
     elif code_info["appareil"] != appareil_id:
         return jsonify({"erreur": "Ce code est déjà utilisé sur un autre appareil"}), 403
 
-    with open('premium.json', 'r', encoding='utf-8') as f:
-        recettes = json.load(f)
+    try:
+        with open('premium.json', 'r', encoding='utf-8') as f:
+            recettes = json.load(f)
+    except:
+        recettes = [{"titre": "Recette test", "ingredients": "Contenu secret"}]
     
     return jsonify({"recettes": recettes, "phone": AMIRA_PHONE})
 
 if __name__ == '__main__':
-    import sys
-    if len(sys.argv) > 1 and sys.argv[1] == 'newcode':
-        prix = int(sys.argv[2]) if len(sys.argv) > 2 else 1000
-        if prix < PRIX_MINIMUM:
-            print(f"Erreur : Le prix minimum est de {PRIX_MINIMUM} FCFA")
-        else:
-            nouveau_code = f"AJ-{secrets.token_hex(2).upper()}-{secrets.token_hex(2).upper()}"
-            CODES_DB[hacher_code(nouveau_code)] = {"appareil": None}
-            print(f"Code généré : {nouveau_code}")
-    else:
-        app.run(debug=True, port=5000)
+    app.run(debug=True, port=5000)
