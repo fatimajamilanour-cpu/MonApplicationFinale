@@ -27,7 +27,7 @@ def accueil():
     <head>
         <meta charset="UTF-8">
         <title>Recettes Secrètes</title>
-        <link rel="manifest" href="/manifest.json">
+        <link rel="manifest" href="data:application/json,{%22name%22:%22Recettes%20Secr%C3%A8tes%22,%22short_name%22:%22Recettes%22,%22start_url%22:%22/%22,%22display%22:%22standalone%22,%22background_color%22:%22%23f4f4f9%22,%22theme_color%22:%22%236C4CE8%22,%22icons%22:[{%22src%22:%22https://cdn-icons-png.flaticon.com/512/3075/3075977.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22}]}">
         <style>
             body { text-align:center; font-family:sans-serif; padding:50px; background:#f4f4f9; }
             .box { background:white; padding:30px; border-radius:10px; max-width:400px; margin:auto; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
