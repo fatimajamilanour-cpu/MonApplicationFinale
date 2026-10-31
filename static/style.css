@@ -1,0 +1,6 @@
+body { font-family: Arial, sans-serif; background: #f4f4f9; text-align: center; padding: 50px; }
+.container { background: white; padding: 30px; border-radius: 10px; max-width: 400px; margin: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+input { width: 80%; padding: 10px; margin: 10px 0; text-transform: uppercase; }
+button { background: #6C4CE8; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+#message { margin-top: 15px; font-weight: bold; }
+#recettes-cachees { display: none; text-align: left; margin-top: 20px; background: #e3f4ea; padding: 10px; }
