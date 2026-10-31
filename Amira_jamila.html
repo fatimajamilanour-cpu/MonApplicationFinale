@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Amira_jamila – Cuisine et pâtisserie</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Public+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fbf4f1;--card:#fff;--ink:#3b1f3a;--mute:#74596f;--acc:#c2185b;--onacc:#fff;--gold:#e0a100;--line:#ead9d8;--lock:#f1e6ee;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d0f1d;--card:#2a1829;--ink:#f6e8f1;--mute:#c4a5bb;--acc:#ff6fa5;--onacc:#2a0b1b;--line:#46304a;--lock:#3a2338}}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 "Public Sans",system-ui,sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque",Georgia,serif;line-height:1.1;margin:0}
+header,main{max-width:760px;margin:0 auto;padding:0 16px}
+header{padding-top:24px}h1{font-size:clamp(2rem,9vw,3rem);font-weight:800;color:var(--acc)}
+.sub{color:var(--mute);margin:6px 0 0}
+nav{display:flex;gap:6px;overflow-x:auto;padding:14px 16px 10px;max-width:760px;margin:0 auto;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5}
+button,.chip{font:inherit;cursor:pointer;border:1.5px solid var(--line);background:var(--card);color:var(--ink);padding:8px 14px;border-radius:99px;white-space:nowrap;font-weight:600;text-decoration:none;display:inline-block}
+[aria-selected=true],[aria-pressed=true],.cta{background:var(--acc);color:var(--onacc);border-color:var(--acc)}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+section{display:none;padding:10px 0 48px}section.on{display:block}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 14px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.rc{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;text-align:left;padding:0;border-radius:16px;white-space:normal;color:var(--ink)}
+.img{height:92px;display:flex;align-items:center;justify-content:center;font-size:3rem;background:linear-gradient(135deg,#ffd9e6,#ffe9b8)}
+.rc .t{padding:10px 12px}.rc b{display:block;font-size:.95rem;line-height:1.25}
+.badge{font-size:.78rem;font-weight:700;color:#1f7a4d}.lk .badge{color:var(--acc)}.lk .img{filter:grayscale(.6);opacity:.7}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px}
+.big{font-size:4rem;text-align:center;background:linear-gradient(135deg,#ffd9e6,#ffe9b8);border-radius:14px;padding:14px;margin-bottom:12px}
+ol li,ul li{margin-bottom:8px}.note{font-size:.88rem;color:var(--mute)}
+input{font:inherit;padding:10px 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);width:100%;margin:8px 0}
+.lockbox{background:var(--lock);border-radius:12px;padding:14px;margin-top:12px}
+#msg{font-weight:600;margin:6px 0 0}
+</style>
+</head>
+<body>
+<header>
+<h1>Amira_jamila</h1>
+<p class="sub">Cuisine et pâtisserie : africaine, européenne, asiatique. 5 recettes gratuites, le reste à débloquer.</p>
+</header>
+<nav role="tablist">
+<button role="tab" aria-selected="true" data-t="rec">Recettes</button>
+<button role="tab" aria-selected="false" data-t="pay">Débloquer</button>
+<button role="tab" aria-selected="false" data-t="ct">Contact</button>
+</nav>
+<main>
+<section id="rec" class="on">
+<div id="list">
+<div class="row" id="cats"></div>
+<div class="grid" id="grid"></div>
+</div>
+<div id="det" hidden></div>
+</section>
+
+<section id="pay">
+<div class="box">
+<h2>Débloquer toutes les recettes</h2>
+<p>Accès complet à partir de <b id="px"></b> FCFA.</p>
+<ol>
+<li>Demande ton code à Amira avec le bouton ci-dessous.</li>
+<li>Amira t’explique le paiement (Orange Money, Wave ou carte) et te donne ton code personnel.</li>
+<li>Tape ton code ici.</li>
+</ol>
+<div class="row"><a class="chip cta" id="wa" target="_blank" rel="noopener" href="#">Demander mon code</a></div>
+<input id="code" placeholder="Ton code de déblocage" autocomplete="off" aria-label="Code de déblocage">
+<button class="chip cta" id="ok">Valider le code</button>
+<p id="msg"></p>
+<p class="note">Un code fonctionne sur un seul appareil.</p>
+</div>
+</section>
+
+<section id="ct">
+<div class="box">
+<h2>Contact</h2>
+<p>Une question, un conseil, des ingrédients ? Écris-nous.</p>
+<div class="row"><a class="chip cta" id="wa2" target="_blank" rel="noopener" href="#">Contacter Amira sur WhatsApp</a></div>
+<p><b>Réseaux sociaux</b> : Snapchat, Facebook, Instagram, TikTok, YouTube<br>Nom : <b>Amira l’égyptienne</b></p>
+</div>
+</section>
+</main>
+
+<script>
+const $=s=>document.querySelector(s);
+const CFG={prix:1000};
+const R=[{"c":"Monde","e":"🍕","f":1,"n":"Pizza maison moelleuse (4 pizzas)","i":"1 kg farine;40 g levure fraîche (ou 15 g sèche);20 g sel;1 verre à thé d’huile;1 verre de lait;1½ verre d’eau tiède;1 œuf;Sauce : 1 oignon, 2 gousses d’ail, 1 boîte de tomates concassées, 1 brique de coulis, 1 c. à soupe thym + herbes de Provence, 1 c. à soupe ras el hanout, 5 morceaux de sucre, sel, poivre, huile d’olive","s":"Mélange farine, sel, levure, huile, lait, œuf et eau tiède ; pétris puis laisse lever environ 1 h.|Prépare la sauce : fais revenir oignon et ail, ajoute tomates, coulis, épices, sucre, sel et poivre ; mijote.|Préchauffe le four à 200 °C (haut et bas).|Étale la pâte finement et garnis.|Pose la pizza sur du papier sulfurisé, tout en bas du four.|Cuis environ 6 minutes."},{"c":"Afrique","e":"🐟","f":1,"n":"Thiéboudiène","i":"Rof : persil, ail, piment, sel;Oignon, piment, yét, poisson fumé, nokoss;Concentré de tomate, tomates pelées;Carottes, chou, aubergine, bissap blanc, gombo;Poisson frais, crevettes;Riz","s":"Prépare le rof et glisse-le dans les entailles du poisson.|Fais revenir l’oignon, ajoute le concentré, puis tomates pelées, poisson fumé et nokoss.|Ajoute les légumes et de l’eau ; laisse mijoter.|Ajoute poisson et crevettes presque en fin de cuisson ; retire-les dès qu’ils sont cuits.|Retire les légumes, rectifie l’assaisonnement, cuis le riz dans la sauce jusqu’à absorption.|Dresse le riz, puis légumes, poisson et crevettes."},{"c":"Monde","e":"🍝","f":1,"n":"Spaghetti bolognaise","i":"400 g spaghetti;400 g bœuf haché;1 oignon, 2 gousses d’ail, 1 carotte;500 g tomates concassées;2 c. à soupe concentré;Huile d’olive, sel, poivre, origan","s":"Fais revenir oignon, carotte et ail à feu moyen.|Ajoute le bœuf et fais dorer.|Ajoute tomates, concentré, origan, sel, poivre ; mijote 30 à 40 min.|Cuis les spaghetti al dente et mélange."},{"c":"Pâtisserie","e":"🎂","f":1,"n":"Génoise moelleuse","i":"6 œufs;200 g sucre;228 g farine;1 c. à café levure;1 sachet vanille;5 c. à soupe huile;5 c. à soupe lait","s":"Sépare jaunes et blancs.|Bats les blancs, ajoute la vanille puis le sucre en deux fois.|Ajoute les jaunes, puis farine, levure, huile et lait délicatement.|Verse dans un moule de 15 à 20 cm.|Cuis 1 h à 150 °C.|Version simple (moule 16 cm) : 5 œufs, 150 g sucre, 150 g farine."},{"c":"Afrique","e":"🍅","f":1,"n":"Sauce tomate maison","i":"1 kg tomates mûres;1 oignon, 2 gousses d’ail;3 c. à soupe huile;1 c. à café sucre;Sel, poivre, thym","s":"Fais suer l’oignon dans l’huile.|Ajoute l’ail puis les tomates.|Assaisonne et mijote 25 à 30 min à feu doux.|Mixe pour une sauce lisse ; ajuste sel et sucre."},{"c":"Pains","e":"🍔","n":"Pain burger (10 pains)"},{"c":"Pains","e":"🥐","n":"Pain au lait brioché"},{"c":"Pains","e":"🍫","n":"Pain au lait au chocolat"},{"c":"Pains","e":"🍞","n":"Pain de mie"},{"c":"Pâtisserie","e":"🍑","n":"Brioche à la confiture d’abricot"},{"c":"Pâtisserie","e":"🥮","n":"Brioche marbrée cœur Nutella"},{"c":"Monde","e":"🥟","n":"Brioches vapeur à la viande"},{"c":"Afrique","e":"🍗","n":"Poulet aux oignons (yassa)"},{"c":"Afrique","e":"🥬","n":"Fakoyé (sauce gombo)"},{"c":"Afrique","e":"🥜","n":"Mafé"},{"c":"Afrique","e":"🌾","n":"Tô"},{"c":"Afrique","e":"🍖","n":"Thieb yap (riz à la viande)"},{"c":"Pâtisserie","e":"🍰","n":"Madeleines"},{"c":"Monde","e":"🍚","n":"Bibimbap (Corée)"},{"c":"Monde","e":"🍙","n":"Onigiri (Japon)"}];
+let tok="",cat="Tout",P={};
+try{tok=localStorage.getItem("aj_t")||""}catch(e){}
+function devId(){try{let d=localStorage.getItem("aj_d");if(!d){d=(crypto.randomUUID?crypto.randomUUID():Date.now()+Math.random().toString(16).slice(2));localStorage.setItem("aj_d",d)}return d}catch(e){return "tmp"+Math.random().toString(16).slice(2)}}
+const full=(r,k)=>r.f?r:(P[k]?{...r,...P[k]}:null);
+$("#px").textContent=CFG.prix;
+function go(t){document.querySelectorAll("nav button").forEach(x=>x.setAttribute("aria-selected",x.dataset.t===t));document.querySelectorAll("section").forEach(s=>s.classList.toggle("on",s.id===t));window.scrollTo(0,0)}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>go(b.dataset.t));
+function list(){
+ $("#cats").innerHTML=["Tout","Afrique","Pains","Pâtisserie","Monde"].map(c=>`<button class="chip" data-c="${c}" aria-pressed="${c===cat}">${c}</button>`).join("");
+ $("#cats").querySelectorAll("button").forEach(b=>b.onclick=()=>{cat=b.dataset.c;list()});
+ $("#grid").innerHTML=R.map((r,k)=>[r,k]).filter(([r])=>cat==="Tout"||r.c===cat).map(([r,k])=>{const o=!!full(r,k);return `<button class="rc ${o?"":"lk"}" data-k="${k}"><div class="img">${r.e}</div><div class="t"><b>${r.n}</b><span class="badge">${r.f?"Gratuit":o?"Débloquée":"🔒 Premium"}</span></div></button>`}).join("");
+ $("#grid").querySelectorAll("button").forEach(b=>b.onclick=()=>show(+b.dataset.k));
+}
+function show(k){
+ const r=R[k],f=full(r,k);$("#list").hidden=true;const d=$("#det");d.hidden=false;
+ let h=`<button class="chip" id="bk">← Retour</button><div class="box" style="margin-top:12px"><div class="big">${r.e}</div><h2>${r.n}</h2>`;
+ if(f) h+=`<h3 style="margin-top:16px">Ingrédients</h3><ul>${f.i.split(";").map(x=>`<li>${x}</li>`).join("")}</ul><h3>Préparation</h3><ol>${f.s.split("|").map(x=>`<li>${x}</li>`).join("")}</ol>`;
+ else h+=`<div class="lockbox">🔒 Recette premium. Accès complet à partir de ${CFG.prix} FCFA.<div class="row" style="margin-top:10px"><button class="chip cta" id="gp">Débloquer</button></div></div>`;
+ d.innerHTML=h+"</div>";$("#bk").onclick=back;
+ if($("#gp"))$("#gp").onclick=()=>{back();go("pay")};
+ window.scrollTo(0,0);
+}
+function back(){$("#det").hidden=true;$("#list").hidden=false;list()}
+async function load(){
+ if(!tok)return;
+ try{const x=await fetch("/api/premium",{headers:{Authorization:"Bearer "+tok}});
+  if(x.ok){P=await x.json()}else{tok="";try{localStorage.removeItem("aj_t")}catch(e){}}}catch(e){}
+}
+$("#ok").onclick=async()=>{
+ const m=$("#msg");m.textContent="Vérification…";
+ try{
+  const x=await fetch("/api/redeem",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:$("#code").value.trim(),device:devId()})});
+  const j=await x.json();
+  if(x.ok){tok=j.token;try{localStorage.setItem("aj_t",tok)}catch(e){}await load();m.textContent="Bravo, toutes les recettes sont débloquées !";list()}
+  else m.textContent=j.error||"Code incorrect.";
+ }catch(e){m.textContent="Connexion au serveur impossible."}
+};
+fetch("/api/config").then(r=>r.json()).then(j=>{$("#wa").href=j.wa;$("#wa2").href=j.wa}).catch(()=>{});
+list();load().then(list);
+</script>
+</body>
+</html>
