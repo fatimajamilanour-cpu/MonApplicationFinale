@@ -22,7 +22,7 @@ button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(-
 section{display:none;padding:10px 0 48px}section.on{display:block}
 .row{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 14px}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.rc{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;text-align:left;padding:0;border-radius:16px;white-space:normal;color:var(--ink)}
+.rc{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;text-align:left;padding:0;white-space:normal;color:var(--ink)}
 .img{height:120px;background-size:cover;background-position:center;background-color:#eee}
 .rc .t{padding:10px 12px}.rc b{display:block;font-size:.95rem;line-height:1.25}
 .badge{font-size:.78rem;font-weight:700;color:#1f7a4d}.lk .badge{color:var(--acc)}.lk .img{filter:grayscale(.6);opacity:.7}
@@ -56,73 +56,120 @@ input{font:inherit;padding:10px 12px;border-radius:10px;border:1.5px solid var(-
 <section id="pay">
 <div class="box">
 <h2>Débloquer toutes les recettes</h2>
-<p>Accès complet à partir de <b>1000</b> FCFA.</p>
+<p>Accès complet à partir de <b id="px"></b> FCFA.</p>
+<ol>
+<li>Demande ton code à Amira avec le bouton ci-dessous.</li>
+<li>Amira t’explique le paiement et te donne ton code personnel.</li>
+<li>Tape ton code ici.</li>
+</ol>
 <div class="row"><a class="chip cta" id="wa" target="_blank" rel="noopener" href="#">Demander mon code</a></div>
-<input id="code" placeholder="Ton code de déblocage" autocomplete="off">
+<input id="code" placeholder="Ton code de déblocage" autocomplete="off" aria-label="Code de déblocage">
 <button class="chip cta" id="ok">Valider le code</button>
 <p id="msg"></p>
+<p class="note">Un code fonctionne sur un seul appareil.</p>
 </div>
 </section>
 
 <section id="ct">
 <div class="box">
 <h2>Contact</h2>
-<p>Une question, un conseil ? Écris-nous.</p>
+<p>Une question, un conseil, des ingrédients ? Écris-nous.</p>
 <div class="row"><a class="chip cta" id="wa2" target="_blank" rel="noopener" href="#">Contacter Amira sur WhatsApp</a></div>
+<p><b>Réseaux sociaux</b> : Snapchat, Facebook, Instagram, TikTok, YouTube<br>Nom : <b>Amira l’égyptienne</b></p>
 </div>
 </section>
 </main>
 
 <script>
 const $=s=>document.querySelector(s);
+const CFG={prix:2000};
+// URL de base de ton dossier GitHub pour les images
+const BASE_IMG = "https://raw.githubusercontent.com/fatimajamilanour-cpu/MonApplicationFinale/main/";
+
+// Noms de tes images exacts (vus sur ta capture d'écran)
 const R=[
-{"c":"Monde","img":"https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400","f":1,"n":"Pizza maison","i":"1 kg farine;Levure;Sel;Huile;Lait;Eau tiède;Œuf;Sauce tomate","s":"Mélange la pâte.|Laisse lever 1h.|Étale et garnis.|Cuis 6 min à 200°C."},
-{"c":"Afrique","img":"https://images.unsplash.com/photo-1548943487-a2e4e43b4853?w=400","f":1,"n":"Thiéboudiène","i":"Poisson;Riz;Légumes;Tomate;Épices","s":"Prépare le poisson.|Cuis les légumes.|Cuis le riz dans le bouillon.|Dresse."},
-{"c":"Monde","img":"https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400","f":1,"n":"Spaghetti bolognaise","i":"Spaghetti;Bœuf haché;Tomate;Oignon;Ail","s":"Fais revenir la viande.|Ajoute la sauce tomate.|Mijote 30 min.|Mélange aux pâtes."},
-{"c":"Pâtisserie","img":"https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400","f":1,"n":"Génoise moelleuse","i":"Œufs;Sucre;Farine;Levure;Vanille","s":"Bats les œufs avec le sucre.|Ajoute la farine.|Cuis 1h à 150°C."},
-{"c":"Afrique","img":"https://images.unsplash.com/photo-1608219821358-6b2e3e4b4e5d?w=400","f":1,"n":"Sauce tomate maison","i":"Tomates;Oignon;Ail;Huile;Sucre","s":"Fais suer l'oignon.|Ajoute les tomates.|Mijote 30 min.|Mixe."},
-{"c":"Pains","img":"https://images.unsplash.com/photo-1550547660-d9450f859349?w=400","n":"Pain burger"},
-{"c":"Pains","img":"https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400","n":"Pain au lait brioché"},
-{"c":"Pains","img":"https://images.unsplash.com/photo-1589367920969-ab8e050bbb04?w=400","n":"Pain au lait au chocolat"},
-{"c":"Pains","img":"https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400","n":"Pain de mie"},
-{"c":"Pâtisserie","img":"https://images.unsplash.com/photo-1550617931-e17a7b70dce2?w=400","n":"Brioche à la confiture"},
-{"c":"Pâtisserie","img":"https://images.unsplash.com/photo-1626200419199-391ae4be7a41?w=400","n":"Brioche marbrée Nutella"},
-{"c":"Monde","img":"https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=400","n":"Brioches vapeur"},
-{"c":"Afrique","img":"https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=400","n":"Yassa"},
-{"c":"Afrique","img":"https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400","n":"Fakoyé"},
-{"c":"Afrique","img":"https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400","n":"Mafé"},
-{"c":"Afrique","img":"https://images.unsplash.com/photo-1547592180-85f173990554?w=400","n":"Tô"},
-{"c":"Afrique","img":"https://images.unsplash.com/photo-1516684732162-798a0062be99?w=400","n":"Thieb yap"},
-{"c":"Pâtisserie","img":"https://images.unsplash.com/photo-1550617931-e17a7b70dce2?w=400","n":"Madeleines"},
-{"c":"Monde","img":"https://images.unsplash.com/photo-1553163147-622ab57be1c7?w=400","n":"Bibimbap"},
-{"c":"Monde","img":"https://images.unsplash.com/photo-1553621042-f6e147245754?w=400","n":"Onigiri"}
+{"c":"Monde","img":BASE_IMG+"Pizza maison moelleuse (4 pizzas).jpg","f":1,"n":"Pizza maison moelleuse","i":"1 kg farine;40 g levure;20 g sel;1 verre d'huile;1 verre de lait;1½ verre d'eau;1 œuf;Sauce tomate","s":"Mélange farine, sel, levure, huile, lait, œuf et eau.|Laisse lever 1 h.|Prépare la sauce tomate.|Étale la pâte et garnis.|Cuis 6 minutes à 200 °C."},
+{"c":"Afrique","img":BASE_IMG+"Thiéboudiène (thiébou djeune).jpg","f":1,"n":"Thiéboudiène","i":"Poisson;Riz;Légumes;Tomate;Épices","s":"Prépare le poisson.|Cuis les légumes.|Cuis le riz dans le bouillon.|Dresse le tout."},
+{"c":"Monde","img":BASE_IMG+"Spaghetti bolognaise.jpg","n":"Spaghetti bolognaise"},
+{"c":"Pâtisserie","img":BASE_IMG+"Génoise moelleuse.jpg","n":"Génoise moelleuse"},
+{"c":"Afrique","img":BASE_IMG+"Sauce tomate maison.jpg","f":1,"n":"Sauce tomate maison","i":"Tomates;Oignon;Ail;Huile;Sucre","s":"Fais suer l'oignon.|Ajoute les tomates.|Mijote 30 min.|Mixe."},
+{"c":"Pains","img":BASE_IMG+"Pain burger (10 pains).jpg","n":"Pain burger"},
+{"c":"Pains","img":BASE_IMG+"Pain au lait brioché.jpg","n":"Pain au lait brioché"},
+{"c":"Pains","img":BASE_IMG+"Pain au lait au chocolat.jpg","n":"Pain au lait au chocolat"},
+{"c":"Pains","img":BASE_IMG+"Pain de mie.jpg","f":1,"n":"Pain de mie","i":"Farine;Levure;Sucre;Sel;Lait;Eau;Beurre","s":"Mélange les ingrédients.|Pétris 10 min.|Laisse lever 2h.|Cuis 30 min à 180 °C."},
+{"c":"Pâtisserie","img":BASE_IMG+"Brioche à la confiture d'abricot.jpg","n":"Brioche à la confiture"},
+{"c":"Pâtisserie","img":BASE_IMG+"Brioche marbrée cœur Nutella.jpg","n":"Brioche marbrée Nutella"},
+{"c":"Monde","img":BASE_IMG+"Brioches vapeur à la viande.jpg","n":"Brioches vapeur à la viande"},
+{"c":"Afrique","img":BASE_IMG+"Poulet yassa.jpg","n":"Poulet yassa"},
+{"c":"Afrique","img":BASE_IMG+"Sauce gombo.jpg","n":"Sauce gombo"},
+{"c":"Afrique","img":BASE_IMG+"Mafé.jpg","n":"Mafé"},
+{"c":"Afrique","img":BASE_IMG+"Tô.jpg","f":1,"n":"Tô","i":"Farine de mil;Eau;Sauce","s":"Bouillir l'eau.|Ajouter la farine.|Mélanger jusqu'à épaississement."},
+{"c":"Afrique","img":BASE_IMG+"Thieb yap (riz à la viande).jpg","n":"Thieb yap"},
+{"c":"Pâtisserie","img":BASE_IMG+"Madeleine.jpg","n":"Madeleines"},
+{"c":"Monde","img":BASE_IMG+"Bibimbap (corée).jpg","n":"Bibimbap"},
+{"c":"Monde","img":BASE_IMG+"Onigiri (Japon).jpg","n":"Onigiri"},
+{"c":"Pâtisserie","img":BASE_IMG+"Génoise au chocolat.jpg","f":1,"n":"Génoise au chocolat","i":"Œufs;Sucre;Farine;Cacao;Levure;Beurre","s":"Fouette œufs et sucre.|Ajoute farine et cacao.|Cuis 25 min à 170 °C."},
+{"c":"Afrique","img":BASE_IMG+"Fakoye.jpg","n":"Fakoye"},
+{"c":"Afrique","img":BASE_IMG+"Wujula (pain vapeur) avec sauce.jpg","n":"Wujula"},
+{"c":"Afrique","img":BASE_IMG+"Pastels.jpg","n":"Pastels"},
+{"c":"Pâtisserie","img":BASE_IMG+"Gâteau moka.jpg","n":"Gâteau moka"},
+{"c":"Monde","img":BASE_IMG+"Sandwich à la viande hachée.jpg","n":"Sandwich viande hachée"},
+{"c":"Monde","img":BASE_IMG+"Couscous arabe.jpg","n":"Couscous arabe"},
+{"c":"Monde","img":BASE_IMG+"Vermicelles sautés au poulet.jpg","n":"Vermicelles au poulet"},
+{"c":"Afrique","img":BASE_IMG+"Bouillie de mil (moni).jpg","n":"Bouillie de mil"},
+{"c":"Afrique","img":BASE_IMG+"Soupe de tête de mouton.jpg","n":"Soupe de tête de mouton"},
+{"c":"Boissons","img":BASE_IMG+"Smoothie banane.jpg","n":"Smoothie banane"},
+{"c":"Boissons","img":BASE_IMG+"Smoothie fraise.jpg","n":"Smoothie fraise"},
+{"c":"Boissons","img":BASE_IMG+"Smoothie Nutella.jpg","n":"Smoothie Nutella"},
+{"c":"Boissons","img":BASE_IMG+"Smoothie Oreo.jpg","n":"Smoothie Oreo"},
+{"c":"Boissons","img":BASE_IMG+"Smoothie Kinder Bueno.jpg","n":"Smoothie Kinder Bueno"}
 ];
+
 let tok="",cat="Tout",P={};
+try{tok=localStorage.getItem("aj_t")||""}catch(e){}
+function devId(){try{let d=localStorage.getItem("aj_d");if(!d){d=(crypto.randomUUID?crypto.randomUUID():Date.now()+Math.random().toString(16).slice(2));localStorage.setItem("aj_d",d)}return d}catch(e){return "tmp"+Math.random().toString(16).slice(2)}}
+const full=(r,k)=>r.f?r:(P[k]?{...r,...P[k]}:null);
+$("#px").textContent=CFG.prix;
 function go(t){document.querySelectorAll("nav button").forEach(x=>x.setAttribute("aria-selected",x.dataset.t===t));document.querySelectorAll("section").forEach(s=>s.classList.toggle("on",s.id===t));window.scrollTo(0,0)}
 document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>go(b.dataset.t));
+
 function list(){
- $("#cats").innerHTML=["Tout","Afrique","Pains","Pâtisserie","Monde"].map(c=>`<button class="chip" data-c="${c}" aria-pressed="${c===cat}">${c}</button>`).join("");
+ $("#cats").innerHTML=["Tout","Afrique","Pains","Pâtisserie","Monde","Boissons"].map(c=>`<button class="chip" data-c="${c}" aria-pressed="${c===cat}">${c}</button>`).join("");
  $("#cats").querySelectorAll("button").forEach(b=>b.onclick=()=>{cat=b.dataset.c;list()});
- $("#grid").innerHTML=R.map((r,k)=>[r,k]).filter(([r])=>cat==="Tout"||r.c===cat).map(([r,k])=>{const o=!!(r.f||P[k]);return `<button class="rc ${o?"":"lk"}" data-k="${k}"><div class="img" style="background-image:url('${r.img}')"></div><div class="t"><b>${r.n}</b><span class="badge">${r.f?"Gratuit":o?"Débloquée":"🔒 Premium"}</span></div></button>`}).join("");
+ $("#grid").innerHTML=R.map((r,k)=>[r,k]).filter(([r])=>cat==="Tout"||r.c===cat).map(([r,k])=>{
+   const o=!!full(r,k);
+   // On utilise encodeURI pour gérer les espaces et les accents dans les noms de fichiers
+   return `<button class="rc ${o?"":"lk"}" data-k="${k}"><div class="img" style="background-image:url('${encodeURI(r.img)}')"></div><div class="t"><b>${r.n}</b><span class="badge">${r.f?"Gratuit":o?"Débloquée":"🔒 Premium"}</span></div></button>`
+ }).join("");
  $("#grid").querySelectorAll("button").forEach(b=>b.onclick=()=>show(+b.dataset.k));
 }
+
 function show(k){
- const r=R[k],f=r.f||P[k];$("#list").hidden=true;const d=$("#det");d.hidden=false;
- let h=`<button class="chip" id="bk">← Retour</button><div class="box" style="margin-top:12px"><div class="big" style="background-image:url('${r.img}')"></div><h2>${r.n}</h2>`;
- if(f) h+=`<h3>Ingrédients</h3><ul>${r.i.split(";").map(x=>`<li>${x}</li>`).join("")}</ul><h3>Préparation</h3><ol>${r.s.split("|").map(x=>`<li>${x}</li>`).join("")}</ol>`;
- else h+=`<div class="lockbox">🔒 Premium. 1000 FCFA.<div class="row"><button class="chip cta" id="gp">Débloquer</button></div></div>`;
+ const r=R[k],f=full(r,k);$("#list").hidden=true;const d=$("#det");d.hidden=false;
+ let h=`<button class="chip" id="bk">← Retour</button><div class="box" style="margin-top:12px"><div class="big" style="background-image:url('${encodeURI(r.img)}')"></div><h2>${r.n}</h2>`;
+ if(f) h+=`<h3 style="margin-top:16px">Ingrédients</h3><ul>${f.i.split(";").map(x=>`<li>${x}</li>`).join("")}</ul><h3>Préparation</h3><ol>${f.s.split("|").map(x=>`<li>${x}</li>`).join("")}</ol>`;
+ else h+=`<div class="lockbox">🔒 Recette premium. Accès complet à partir de ${CFG.prix} FCFA.<div class="row" style="margin-top:10px"><button class="chip cta" id="gp">Débloquer</button></div></div>`;
  d.innerHTML=h+"</div>";$("#bk").onclick=back;
  if($("#gp"))$("#gp").onclick=()=>{back();go("pay")};
  window.scrollTo(0,0);
 }
 function back(){$("#det").hidden=true;$("#list").hidden=false;list()}
+async function load(){
+ if(!tok)return;
+ try{const x=await fetch("/api/premium",{headers:{Authorization:"Bearer "+tok}});
+  if(x.ok){P=await x.json()}else{tok="";try{localStorage.removeItem("aj_t")}catch(e){}}}catch(e){}
+}
 $("#ok").onclick=async()=>{
  const m=$("#msg");m.textContent="Vérification…";
- // Simulation pour le test
- setTimeout(()=>{m.textContent="Bravo, recettes débloquées !";P={0:1,1:1,2:1,3:1,4:1};list()}, 1000);
+ try{
+  const x=await fetch("/api/redeem",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:$("#code").value.trim(),device:devId()})});
+  const j=await x.json();
+  if(x.ok){tok=j.token;try{localStorage.setItem("aj_t",tok)}catch(e){}await load();m.textContent="Bravo, toutes les recettes sont débloquées !";list()}
+  else m.textContent=j.error||"Code incorrect.";
+ }catch(e){m.textContent="Connexion au serveur impossible."}
 };
 fetch("/api/config").then(r=>r.json()).then(j=>{$("#wa").href=j.wa;$("#wa2").href=j.wa}).catch(()=>{});
-list();
+list();load().then(list);
 </script>
 </body>
 </html>
