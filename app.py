@@ -91,6 +91,7 @@ def accueil():
     """
     CODES_DB[hacher_code("AJ-2503-72BD")] = {"appareil": None}
     return html
+    CODES_DB[hacher_code("AJ-9999-VIP1")] = {"appareil": None}
 
 @app.route('/api/recettes-premium', methods=['POST'])
 def get_recettes():
