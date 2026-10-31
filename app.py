@@ -24,7 +24,7 @@ def hacher_code(code):
 def accueil():
     # On ajoute le code de test ici
     CODES_DB[hacher_code("AJ-2503-72BD")] = {"appareil": None}
-    return send_from_directory('static', 'index.html')
+    return "Mon application est en ligne !"
 
 @app.route('/api/recettes-premium', methods=['POST'])
 def get_recettes():
