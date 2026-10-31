@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recettes Secrètes</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="text-align:center; font-family:sans-serif; padding:50px; background:#f4f4f9;">
+    <div style="background:white; padding:30px; border-radius:10px; max-width:400px; margin:auto; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        <h2>Recettes Secrètes</h2>
+        <p>Entre ton code d'accès :</p>
+        <input type="text" id="codeInput" placeholder="AJ-XXXX-XXXX" style="padding:10px; width:80%; margin-bottom:10px; text-transform:uppercase;">
+        <br>
+        <button onclick="verifierCode()" style="background:#6C4CE8; color:white; padding:10px 20px; border:none; border-radius:5px; cursor:pointer;">Débloquer</button>
+        <p id="message" style="font-weight:bold; margin-top:15px;"></p>
+        <div id="recettes-cachees" style="display:none; text-align:left; margin-top:15px; background:#e3f4ea; padding:10px; border-radius:8px;">
+            <ul id="liste-recettes"></ul>
+            <a id="bouton-whatsapp" href="#" target="_blank" style="display:block; margin-top:10px; color:#1f7a4d;">Contacter sur WhatsApp</a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
