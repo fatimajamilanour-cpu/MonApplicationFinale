@@ -33,7 +33,7 @@ ol li,ul li{margin-bottom:8px}.note{font-size:.88rem;color:var(--mute)}
 input{font:inherit;padding:10px 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);width:100%;margin:8px 0}
 .lockbox{background:var(--lock);border-radius:12px;padding:14px;margin-top:12px}
 #msg{font-weight:600;margin:6px 0 0}
-.pay-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: #f4f4f4; color: #333; border: 1px solid #ddd; padding: 12px; border-radius: 8px; margin-bottom: 10px; width: 100%; font-weight: bold; text-decoration: none; }
+.pay-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: #f4f4f4; color: #333; border: 1px solid #ddd; padding: 12px; border-radius: 8px; margin-bottom: 10px; width: 100%; font-weight: bold; text-decoration: none; border: none; cursor: pointer; }
 .pay-btn:hover { background: #e0e0e0; }
 </style>
 </head>
@@ -67,10 +67,13 @@ input{font:inherit;padding:10px 12px;border-radius:10px;border:1.5px solid var(-
 </div>
 <div id="pay-zone" style="display:none; margin-top:20px;">
   <h3>Paiement pour : <span id="pack-nom"></span></h3>
-  <a class="pay-btn" href="https://wa.me/22391999235" target="_blank">📱 Payer par Orange Money</a>
-  <a class="pay-btn" href="https://wa.me/22391999235" target="_blank">🌊 Payer par Wave</a>
-  <a class="pay-btn" href="https://wa.me/22391999235" target="_blank">💳 Payer par Mastercard</a>
-  <p class="note">Envoie la capture d'écran sur WhatsApp pour recevoir ton code.</p>
+  
+  <!-- BOUTONS DE PAIEMENT PAYDUNYA -->
+  <button class="pay-btn" onclick="payer('om')">📱 Payer par Orange Money</button>
+  <button class="pay-btn" onclick="payer('wave')">🌊 Payer par Wave</button>
+  <button class="pay-btn" onclick="payer('card')">💳 Payer par Mastercard</button>
+  
+  <p id="pmsg" style="font-weight:bold; margin-top:10px;"></p>
 </div>
 <div style="margin-top:20px; border-top:1px solid var(--line); padding-top:20px;">
 <p class="note">Déjà un code ? Entre-le ici :</p>
@@ -149,19 +152,36 @@ const R=[
 {"c":"Pâtisserie","img":BASE_IMG+"Pain aux raisins.jpg","f":1,"n":"Pain aux raisins"}
 ];
 
-let tok="",cat="Tout",packsAchetes={};
+let tok="",cat="Tout",packsAchetes={},currentPack="pat";
 try{tok=localStorage.getItem("aj_t")||""}catch(e){}
 function devId(){try{let d=localStorage.getItem("aj_d");if(!d){d=(crypto.randomUUID?crypto.randomUUID():Date.now()+Math.random().toString(16).slice(2));localStorage.setItem("aj_d",d)}return d}catch(e){return "tmp"+Math.random().toString(16).slice(2)}}
 const isUnlocked = (r,k) => r.f || (r.pack && packsAchetes[r.pack]);
 
 function choisirPack(pack) {
+  currentPack = pack;
   const noms = {pat:"Pâtisserie (10 000 F)", cui:"Cuisine (5 000 F)", all:"Tout (15 000 F)"};
   $("#pack-nom").textContent = noms[pack];
   $("#pay-zone").style.display = "block";
-  const liens = document.querySelectorAll(".pay-btn");
-  liens[0].href = `https://wa.me/22391999235?text=Je souhaite payer par Orange Money pour le pack ${noms[pack]}`;
-  liens[1].href = `https://wa.me/22391999235?text=Je souhaite payer par Wave pour le pack ${noms[pack]}`;
-  liens[2].href = `https://wa.me/22391999235?text=Je souhaite payer par Mastercard pour le pack ${noms[pack]}`;
+}
+
+async function payer(provider) {
+  const m = $("#pmsg");
+  m.textContent = "Connexion au serveur de paiement...";
+  try {
+    const x = await fetch("/api/pay", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ plan: currentPack, provider: provider, device: devId() })
+    });
+    const j = await x.json();
+    if (j.url) {
+      window.location.href = j.url;
+    } else {
+      m.textContent = "Erreur : " + (j.error || "Impossible d'ouvrir le paiement");
+    }
+  } catch (e) {
+    m.textContent = "Erreur de connexion.";
+  }
 }
 
 function go(t){document.querySelectorAll("nav button").forEach(x=>x.setAttribute("aria-selected",x.dataset.t===t));document.querySelectorAll("section").forEach(s=>s.classList.toggle("on",s.id===t));window.scrollTo(0,0)}
