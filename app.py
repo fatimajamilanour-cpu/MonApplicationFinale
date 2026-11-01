@@ -7,8 +7,8 @@ app = Flask(__name__)
 CORS(app)
 
 # ⚠️ REMPLACE CES VALEURS PAR TES VRAIES CLÉS PAYDUNYA (TEST)
-PAYDUNYA_MASTER_KEY = "test_public_DvChTyXrRQIrZ0gcsZKne6ERbfV "
-PAYDUNYA_PRIVATE_KEY = "test_private_YdEyNZnkp6M46a9x5qnGJblxgg3 "
+PAYDUNYA_MASTER_KEY = "test_public_DvChTyXrRQIrZ0gcsZKne6ERbfV"
+PAYDUNYA_PRIVATE_KEY = "test_private_YdEyNZnkp6M46a9x5qnGJblxgg3"
 PAYDUNYA_TOKEN = "ZM3rDIgpzGycg2cOrt2K"
 
 AMIRA_PHONE = "22391999235"
