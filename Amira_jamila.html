@@ -35,17 +35,16 @@ input{font:inherit;padding:10px 12px;border-radius:10px;border:1.5px solid var(-
 #msg{font-weight:600;margin:6px 0 0}
 .pay-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: #f4f4f4; color: #333; border: 1px solid #ddd; padding: 12px; border-radius: 8px; margin-bottom: 10px; width: 100%; font-weight: bold; text-decoration: none; }
 .pay-btn:hover { background: #e0e0e0; }
-.pay-btn img { height: 24px; }
 </style>
 </head>
 <body>
 <header>
 <h1>Amira_jamila</h1>
-<p class="sub">Cuisine et pâtisserie : africaine, européenne, asiatique. 5 recettes gratuites, le reste à débloquer.</p>
+<p class="sub">Cuisine et pâtisserie : 15 recettes gratuites, le reste en packs.</p>
 </header>
 <nav role="tablist">
 <button role="tab" aria-selected="true" data-t="rec">Recettes</button>
-<button role="tab" aria-selected="false" data-t="pay">Débloquer</button>
+<button role="tab" aria-selected="false" data-t="pay">Packs</button>
 <button role="tab" aria-selected="false" data-t="ct">Contact</button>
 </nav>
 <main>
@@ -59,32 +58,25 @@ input{font:inherit;padding:10px 12px;border-radius:10px;border:1.5px solid var(-
 
 <section id="pay">
 <div class="box">
-<h2>Débloquer toutes les recettes</h2>
-<p>Accès complet à partir de <b id="px"></b> FCFA.</p>
-<ol>
-<li>Choisis ton moyen de paiement ci-dessous.</li>
-<li>Effectue le paiement de 2000 FCFA.</li>
-<li>Envoie la capture d'écran sur WhatsApp.</li>
-<li>Tu recevras ton code personnel par message.</li>
-</ol>
-
-<!-- BOUTONS DE PAIEMENT -->
-<a class="pay-btn" href="https://wa.me/22391999235?text=Bonjour, je souhaite payer par Orange Money pour débloquer les recettes." target="_blank">
-    <span style="color:orange; font-size:20px;">📱</span> Payer par Orange Money
-</a>
-<a class="pay-btn" href="https://wa.me/22391999235?text=Bonjour, je souhaite payer par Wave pour débloquer les recettes." target="_blank">
-    <span style="color:blue; font-size:20px;">🌊</span> Payer par Wave
-</a>
-<a class="pay-btn" href="https://wa.me/22391999235?text=Bonjour, je souhaite payer par Carte Bancaire pour débloquer les recettes." target="_blank">
-    <span style="color:black; font-size:20px;">💳</span> Payer par Mastercard / Visa
-</a>
-
+<h2>Choisis ton pack</h2>
+<p>Sélectionne le pack qui t'intéresse :</p>
+<div class="row">
+  <button class="chip cta" onclick="choisirPack('pat')">Pâtisserie (10 000 F)</button>
+  <button class="chip cta" onclick="choisirPack('cui')">Cuisine (5 000 F)</button>
+  <button class="chip cta" onclick="choisirPack('all')">Tout (15 000 F)</button>
+</div>
+<div id="pay-zone" style="display:none; margin-top:20px;">
+  <h3>Paiement pour : <span id="pack-nom"></span></h3>
+  <a class="pay-btn" href="https://wa.me/22391999235" target="_blank">📱 Payer par Orange Money</a>
+  <a class="pay-btn" href="https://wa.me/22391999235" target="_blank">🌊 Payer par Wave</a>
+  <a class="pay-btn" href="https://wa.me/22391999235" target="_blank">💳 Payer par Mastercard</a>
+  <p class="note">Envoie la capture d'écran sur WhatsApp pour recevoir ton code.</p>
+</div>
 <div style="margin-top:20px; border-top:1px solid var(--line); padding-top:20px;">
 <p class="note">Déjà un code ? Entre-le ici :</p>
-<input id="code" placeholder="Ton code de déblocage" autocomplete="off" aria-label="Code de déblocage">
+<input id="code" placeholder="Ton code de déblocage" autocomplete="off">
 <button class="chip cta" id="ok">Valider le code</button>
 <p id="msg"></p>
-<p class="note">Un code fonctionne sur un seul appareil.</p>
 </div>
 </div>
 </section>
@@ -92,60 +84,80 @@ input{font:inherit;padding:10px 12px;border-radius:10px;border:1.5px solid var(-
 <section id="ct">
 <div class="box">
 <h2>Contact</h2>
-<p>Une question, un conseil, des ingrédients ? Écris-nous.</p>
+<p>Une question ? Écris-nous.</p>
 <div class="row"><a class="chip cta" id="wa2" target="_blank" rel="noopener" href="#">Contacter Amira sur WhatsApp</a></div>
 <p><b>Réseaux sociaux</b> : Snapchat, Facebook, Instagram, TikTok, YouTube<br>Nom : <b>Amira l’égyptienne</b></p>
+<p class="note">🔒 <b>Pour voir toutes mes vidéos et astuces en direct, achète un pack de recettes. Les liens vidéos sont exclusifs aux clients.</b></p>
 </div>
 </section>
 </main>
 
 <script>
 const $=s=>document.querySelector(s);
-const CFG={prix:2000};
 const BASE_IMG = "https://raw.githubusercontent.com/fatimajamilanour-cpu/MonApplicationFinale/main/";
 
+const PRICES = { pat: 10000, cui: 5000, all: 15000 };
+
 const R=[
-{"c":"Monde","img":BASE_IMG+"pizza maison moelleuse (4 pizzas).jpg","f":1,"n":"pizza maison moelleuse","i":"1 kg farine;40 g levure;20 g sel;1 verre d'huile;1 verre de lait;1½ verre d'eau;1 œuf;Sauce tomate","s":"Mélange farine, sel, levure, huile, lait, œuf et eau.|Laisse lever 1 h.|Prépare la sauce tomate.|Étale la pâte et garnis.|Cuis 6 minutes à 200 °C."},
-{"c":"Afrique","img":BASE_IMG+"Thiéboudiène (thiébou djeune).jpg","f":1,"n":"Thiéboudiène","i":"Poisson;Riz;Légumes;Tomate;Épices","s":"Prépare le poisson.|Cuis les légumes.|Cuis le riz dans le bouillon.|Dresse le tout."},
-{"c":"Monde","img":BASE_IMG+"Spaghetti bolognaise.jpg","n":"Spaghetti bolognaise"},
-{"c":"Pâtisserie","img":BASE_IMG+"Génoise moelleuse.jpg","n":"Génoise moelleuse"},
-{"c":"Afrique","img":BASE_IMG+"Sauce tomate maison.jpg","f":1,"n":"Sauce tomate maison","i":"Tomates;Oignon;Ail;Huile;Sucre","s":"Fais suer l'oignon.|Ajoute les tomates.|Mijote 30 min.|Mixe."},
-{"c":"Pains","img":BASE_IMG+"Pain burger (10 pains).jpg","n":"Pain burger"},
-{"c":"Pains","img":BASE_IMG+"Pain au lait brioché.jpg","n":"Pain au lait brioché"},
-{"c":"Pains","img":BASE_IMG+"Pain au lait au chocolat.jpg","n":"Pain au lait au chocolat"},
-{"c":"Pains","img":BASE_IMG+"Pain de mie.jpg","f":1,"n":"Pain de mie","i":"Farine;Levure;Sucre;Sel;Lait;Eau;Beurre","s":"Mélange les ingrédients.|Pétris 10 min.|Laisse lever 2h.|Cuis 30 min à 180 °C."},
-{"c":"Pâtisserie","img":BASE_IMG+"Brioche marbrée cœur Nutella.jpg","n":"Brioche marbrée Nutella"},
-{"c":"Monde","img":BASE_IMG+"Brioches vapeur à la viande.jpg","n":"Brioches vapeur à la viande"},
-{"c":"Afrique","img":BASE_IMG+"poulet yassa.jpg","n":"poulet yassa"},
-{"c":"Afrique","img":BASE_IMG+"Sauce gombo.jpg","n":"Sauce gombo"},
-{"c":"Afrique","img":BASE_IMG+"Mafé.jpg","n":"Mafé"},
-{"c":"Afrique","img":BASE_IMG+"Tô.jpg","f":1,"n":"Tô","i":"Farine de mil;Eau;Sauce","s":"Bouillir l'eau.|Ajouter la farine.|Mélanger jusqu'à épaississement."},
-{"c":"Afrique","img":BASE_IMG+"Thieb yap (riz à la viande).jpg","n":"Thieb yap"},
-{"c":"Pâtisserie","img":BASE_IMG+"Madeleine.jpg","n":"Madeleines"},
-{"c":"Monde","img":BASE_IMG+"Bibimbap (corée).jpg","n":"Bibimbap"},
-{"c":"Monde","img":BASE_IMG+"Onigiri (Japon).jpg","n":"Onigiri"},
-{"c":"Pâtisserie","img":BASE_IMG+"Génoise au chocolat.jpg","f":1,"n":"Génoise au chocolat","i":"Œufs;Sucre;Farine;Cacao;Levure;Beurre","s":"Fouette œufs et sucre.|Ajoute farine et cacao.|Cuis 25 min à 170 °C."},
-{"c":"Afrique","img":BASE_IMG+"Fakoye.jpg","n":"Fakoye"},
-{"c":"Afrique","img":BASE_IMG+"Wujula (pain vapeur) avec sauce.jpg","n":"Wujula"},
-{"c":"Afrique","img":BASE_IMG+"Pastels.jpg","n":"Pastels"},
-{"c":"Pâtisserie","img":BASE_IMG+"Gâteau moka.jpg","n":"Gâteau moka"},
-{"c":"Monde","img":BASE_IMG+"Sandwich à la viande hachée.jpg","n":"Sandwich viande hachée"},
-{"c":"Monde","img":BASE_IMG+"Couscous arabe.jpg","n":"Couscous arabe"},
-{"c":"Monde","img":BASE_IMG+"Vermicelles sautés au poulet.jpg","n":"Vermicelles au poulet"},
-{"c":"Afrique","img":BASE_IMG+"Bouillie de mil (moni).jpg","n":"Bouillie de mil"},
-{"c":"Afrique","img":BASE_IMG+"Soupe de tête de mouton.jpg","n":"Soupe de tête de mouton"},
-{"c":"Boissons","img":BASE_IMG+"Smoothie Banane.jpg","n":"Smoothie Banane"},
-{"c":"Boissons","img":BASE_IMG+"Smoothie Fraise.jpg","n":"Smoothie Fraise"},
-{"c":"Boissons","img":BASE_IMG+"Smoothie Nutella.jpg","n":"Smoothie Nutella"},
-{"c":"Boissons","img":BASE_IMG+"Smoothie Oreo.jpg","n":"Smoothie Oreo"},
-{"c":"Boissons","img":BASE_IMG+"Smoothie Kinder Bueno.jpg","n":"Smoothie Kinder Bueno"}
+{"c":"Monde","img":BASE_IMG+"pizza maison moelleuse (4 pizzas).jpg","f":1,"n":"pizza maison moelleuse"},
+{"c":"Afrique","img":BASE_IMG+"Thiéboudiène (thiébou djeune).jpg","f":1,"n":"Thiéboudiène"},
+{"c":"Monde","img":BASE_IMG+"Spaghetti bolognaise.jpg","n":"Spaghetti bolognaise","pack":"cui"},
+{"c":"Pâtisserie","img":BASE_IMG+"Génoise moelleuse.jpg","n":"Génoise moelleuse","pack":"pat"},
+{"c":"Afrique","img":BASE_IMG+"Sauce tomate maison.jpg","f":1,"n":"Sauce tomate maison"},
+{"c":"Pains","img":BASE_IMG+"Pain burger (10 pains).jpg","n":"Pain burger","pack":"pat"},
+{"c":"Pains","img":BASE_IMG+"Pain au lait brioché.jpg","n":"Pain au lait brioché","pack":"pat"},
+{"c":"Pains","img":BASE_IMG+"Pain au lait au chocolat.jpg","n":"Pain au lait au chocolat","pack":"pat"},
+{"c":"Pains","img":BASE_IMG+"Pain de mie.jpg","f":1,"n":"Pain de mie"},
+{"c":"Pâtisserie","img":BASE_IMG+"Brioche à la confiture d'abricot.jpg","n":"Brioche à la confiture","pack":"pat"},
+{"c":"Pâtisserie","img":BASE_IMG+"Brioche marbrée cœur Nutella.jpg","n":"Brioche marbrée Nutella","pack":"pat"},
+{"c":"Monde","img":BASE_IMG+"Brioches vapeur à la viande.jpg","n":"Brioches vapeur à la viande","pack":"cui"},
+{"c":"Afrique","img":BASE_IMG+"poulet yassa.jpg","n":"poulet yassa","pack":"cui"},
+{"c":"Afrique","img":BASE_IMG+"Sauce gombo.jpg","n":"Sauce gombo","pack":"cui"},
+{"c":"Afrique","img":BASE_IMG+"Mafé.jpg","n":"Mafé","pack":"cui"},
+{"c":"Afrique","img":BASE_IMG+"Tô.jpg","f":1,"n":"Tô"},
+{"c":"Afrique","img":BASE_IMG+"Thieb yap (riz à la viande).jpg","n":"Thieb yap","pack":"cui"},
+{"c":"Pâtisserie","img":BASE_IMG+"Madeleine.jpg","n":"Madeleines","pack":"pat"},
+{"c":"Monde","img":BASE_IMG+"Bibimbap (corée).jpg","n":"Bibimbap","pack":"cui"},
+{"c":"Monde","img":BASE_IMG+"Onigiri (Japon).jpg","n":"Onigiri","pack":"cui"},
+{"c":"Pâtisserie","img":BASE_IMG+"Génoise au chocolat.jpg","f":1,"n":"Génoise au chocolat"},
+{"c":"Afrique","img":BASE_IMG+"Fakoye.jpg","n":"Fakoye","pack":"cui"},
+{"c":"Afrique","img":BASE_IMG+"Wujula (pain vapeur) avec sauce.jpg","n":"Wujula","pack":"cui"},
+{"c":"Afrique","img":BASE_IMG+"Pastels.jpg","n":"Pastels","pack":"cui"},
+{"c":"Pâtisserie","img":BASE_IMG+"Gâteau moka.jpg","n":"Gâteau moka","pack":"pat"},
+{"c":"Monde","img":BASE_IMG+"Sandwich à la viande hachée.jpg","n":"Sandwich viande hachée","pack":"cui"},
+{"c":"Monde","img":BASE_IMG+"Sacristain.jpg","n":"Sacristain","pack":"cui"},
+{"c":"Pâtisserie","img":BASE_IMG+"Vermicelles sautés au poulet.jpg","n":"Vermicelles au poulet","pack":"cui"},
+{"c":"Afrique","img":BASE_IMG+"Bouillie de mil (moni).jpg","n":"Bouillie de mil","pack":"cui"},
+{"c":"Afrique","img":BASE_IMG+"Soupe de tête de mouton.jpg","n":"Soupe de tête de mouton","pack":"cui"},
+{"c":"Boissons","img":BASE_IMG+"Smoothie Banane.jpg","n":"Smoothie Banane","pack":"cui"},
+{"c":"Boissons","img":BASE_IMG+"Smoothie fraise.jpg","n":"Smoothie fraise","pack":"cui"},
+{"c":"Boissons","img":BASE_IMG+"Smoothie Nutella.jpg","n":"Smoothie Nutella","pack":"cui"},
+{"c":"Boissons","img":BASE_IMG+"Smoothie Oreo.jpg","n":"Smoothie Oreo","pack":"cui"},
+{"c":"Boissons","img":BASE_IMG+"Smoothie Kinder Bueno.jpg","n":"Smoothie Kinder Bueno","pack":"cui"},
+{"c":"Boissons","img":BASE_IMG+"Smoothie vanillé.jpg","n":"Smoothie vanillé","pack":"cui"},
+{"c":"Pâtisserie","img":BASE_IMG+"Pain suisse.jpg","f":1,"n":"Pain suisse"},
+{"c":"Pâtisserie","img":BASE_IMG+"Tarte aux pommes.jpg","n":"Tarte aux pommes","pack":"pat"},
+{"c":"Pâtisserie","img":BASE_IMG+"Tarte aux fraises.jpg","n":"Tarte aux fraises","pack":"pat"},
+{"c":"Pâtisserie","img":BASE_IMG+"Croissant.jpg","f":1,"n":"Croissant"},
+{"c":"Pâtisserie","img":BASE_IMG+"Sacristain.jpg","f":1,"n":"Sacristain"},
+{"c":"Pâtisserie","img":BASE_IMG+"Pain aux raisins.jpg","f":1,"n":"Pain aux raisins"}
 ];
 
-let tok="",cat="Tout",P={};
+let tok="",cat="Tout",packsAchetes={};
 try{tok=localStorage.getItem("aj_t")||""}catch(e){}
 function devId(){try{let d=localStorage.getItem("aj_d");if(!d){d=(crypto.randomUUID?crypto.randomUUID():Date.now()+Math.random().toString(16).slice(2));localStorage.setItem("aj_d",d)}return d}catch(e){return "tmp"+Math.random().toString(16).slice(2)}}
-const full=(r,k)=>r.f?r:(P[k]?{...r,...P[k]}:null);
-$("#px").textContent=CFG.prix;
+const isUnlocked = (r,k) => r.f || (r.pack && packsAchetes[r.pack]);
+
+function choisirPack(pack) {
+  const noms = {pat:"Pâtisserie (10 000 F)", cui:"Cuisine (5 000 F)", all:"Tout (15 000 F)"};
+  $("#pack-nom").textContent = noms[pack];
+  $("#pay-zone").style.display = "block";
+  const liens = document.querySelectorAll(".pay-btn");
+  liens[0].href = `https://wa.me/22391999235?text=Je souhaite payer par Orange Money pour le pack ${noms[pack]}`;
+  liens[1].href = `https://wa.me/22391999235?text=Je souhaite payer par Wave pour le pack ${noms[pack]}`;
+  liens[2].href = `https://wa.me/22391999235?text=Je souhaite payer par Mastercard pour le pack ${noms[pack]}`;
+}
+
 function go(t){document.querySelectorAll("nav button").forEach(x=>x.setAttribute("aria-selected",x.dataset.t===t));document.querySelectorAll("section").forEach(s=>s.classList.toggle("on",s.id===t));window.scrollTo(0,0)}
 document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>go(b.dataset.t));
 
@@ -153,38 +165,39 @@ function list(){
  $("#cats").innerHTML=["Tout","Afrique","Pains","Pâtisserie","Monde","Boissons"].map(c=>`<button class="chip" data-c="${c}" aria-pressed="${c===cat}">${c}</button>`).join("");
  $("#cats").querySelectorAll("button").forEach(b=>b.onclick=()=>{cat=b.dataset.c;list()});
  $("#grid").innerHTML=R.map((r,k)=>[r,k]).filter(([r])=>cat==="Tout"||r.c===cat).map(([r,k])=>{
-   const o=!!full(r,k);
+   const o=!!isUnlocked(r,k);
    return `<button class="rc ${o?"":"lk"}" data-k="${k}"><div class="img" style="background-image:url('${encodeURI(r.img)}')"></div><div class="t"><b>${r.n}</b><span class="badge">${r.f?"Gratuit":o?"Débloquée":"🔒 Premium"}</span></div></button>`
  }).join("");
  $("#grid").querySelectorAll("button").forEach(b=>b.onclick=()=>show(+b.dataset.k));
 }
 
 function show(k){
- const r=R[k],f=full(r,k);$("#list").hidden=true;const d=$("#det");d.hidden=false;
+ const r=R[k],f=isUnlocked(r,k);$("#list").hidden=true;const d=$("#det");d.hidden=false;
  let h=`<button class="chip" id="bk">← Retour</button><div class="box" style="margin-top:12px"><div class="big" style="background-image:url('${encodeURI(r.img)}')"></div><h2>${r.n}</h2>`;
- if(f) h+=`<h3 style="margin-top:16px">Ingrédients</h3><ul>${f.i.split(";").map(x=>`<li>${x}</li>`).join("")}</ul><h3>Préparation</h3><ol>${f.s.split("|").map(x=>`<li>${x}</li>`).join("")}</ol>`;
- else h+=`<div class="lockbox">🔒 Recette premium. Accès complet à partir de ${CFG.prix} FCFA.<div class="row" style="margin-top:10px"><button class="chip cta" id="gp">Débloquer</button></div></div>`;
+ if(f) h+=`<h3 style="margin-top:16px">Ingrédients</h3><ul>${(r.i||"").split(";").map(x=>`<li>${x}</li>`).join("")}</ul><h3>Préparation</h3><ol>${(r.s||"").split("|").map(x=>`<li>${x}</li>`).join("")}</ol>
+   <div class="row" style="margin-top:15px;"><p class="note" style="font-weight:bold; color:var(--acc);">🔒 La vidéo de cette recette est exclusive. Achète un pack pour y accéder.</p></div>`;
+ else {
+   const p = r.pack ? PRICES[r.pack] : 0;
+   h+=`<div class="lockbox">🔒 Recette premium. Débloque le pack complet pour ${p} FCFA.<div class="row" style="margin-top:10px"><button class="chip cta" id="gp">Voir les packs</button></div></div>`;
+ }
  d.innerHTML=h+"</div>";$("#bk").onclick=back;
- if($("#gp"))$("#gp").onclick=()=>{back();go("pay")};
+ if($("#gp"))$("#gp").onclick=()=>{back();go("pay");choisirPack(r.pack)};
  window.scrollTo(0,0);
 }
 function back(){$("#det").hidden=true;$("#list").hidden=false;list()}
-async function load(){
- if(!tok)return;
- try{const x=await fetch("/api/premium",{headers:{Authorization:"Bearer "+tok}});
-  if(x.ok){P=await x.json()}else{tok="";try{localStorage.removeItem("aj_t")}catch(e){}}}catch(e){}
-}
+
 $("#ok").onclick=async()=>{
  const m=$("#msg");m.textContent="Vérification…";
  try{
   const x=await fetch("/api/redeem",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:$("#code").value.trim(),device:devId()})});
   const j=await x.json();
-  if(x.ok){tok=j.token;try{localStorage.setItem("aj_t",tok)}catch(e){}await load();m.textContent="Bravo, toutes les recettes sont débloquées !";list()}
+  if(x.ok){tok=j.token;packsAchetes=j.packs;try{localStorage.setItem("aj_t",tok)}catch(e){}m.textContent="Bravo, packs débloqués !";list()}
   else m.textContent=j.error||"Code incorrect.";
  }catch(e){m.textContent="Connexion au serveur impossible."}
 };
-fetch("/api/config").then(r=>r.json()).then(j=>{$("#wa").href=j.wa;$("#wa2").href=j.wa}).catch(()=>{});
-list();load().then(list);
+
+fetch("/api/config").then(r=>r.json()).then(j=>{$("#wa2").href=j.wa}).catch(()=>{});
+list();
 </script>
 </body>
 </html>
